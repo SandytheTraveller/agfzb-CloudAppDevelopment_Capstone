@@ -10,9 +10,72 @@
     <body>
 
     <!--Add a nav bar here -->
-
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Your Dealership Reviews</a>
+        <!--more navigation links here later-->
+    </nav>
     <!-- Add reviews as cards -->
 
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dealership Review</title>
+        {% load static %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    
+    <body>
+    
+        <!-- Add a navigation bar here if needed -->
+    
+        <div class="container mt-4">
+            <h2>Dealer Details</h2>
+    
+            <!-- Dealer information -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ dealer.full_name }}</h5>
+                    <p class="card-text">Address: {{ dealer.address }}, {{ dealer.city }}, {{ dealer.st }} {{ dealer.zip }}</p>
+                    <!--more here eventually-->
+                </div>
+            </div>
+    
+            <h2>Dealer Reviews</h2>
+    
+            <!-- Add reviews as cards -->
+            <div class="row">
+                {% for review in reviews %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <div class="card-body">
+                                <p class="card-text">{{ review.review }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Sentiment: {{ review.sentiment }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Display Reviews -->
+            <div class="card-columns">
+                {% for review in reviews %}
+                    <div class="card">
+                        <img class="card-img-left" src="{% static 'emoji/'|add:review.sentiment|add:'.png' %}" alt="Sentiment Emoji">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.car_make }} - {{ review.car_model }}</h5>
+                            <p class="card-title">Purchase Year: {{ review.car_year }}</p>
+                            <p class="card-text">{{ review.review }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    
     </body>
 
 </html>

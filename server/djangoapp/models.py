@@ -1,6 +1,66 @@
-from django.db import models
 from django.utils.timezone import now
+from django.db import models
 
+class CarMake(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class CarModel(models.Model):
+    make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
+    dealer_id = models.IntegerField()
+    name = models.CharField(max_length=100)
+
+    TYPE_CHOICES = (
+        ('Sedan', 'Sedan'),
+        ('SUV', 'SUV'),
+        ('WAGON', 'WAGON'),
+        # Add more choices here
+    )
+    
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    year = models.DateField()
+
+    def __str__(self):
+        return self.name
+
+class CarDealer(models.Model):
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100)
+    id = models.IntegerField(primary_key=True)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+    long = models.DecimalField(max_digits=9, decimal_places=6)
+    short_name = models.CharField(max_length=50)
+    st = models.CharField(max_length=2)
+    zip = models.CharField(max_length=10)
+
+    def __str__(self):
+        return "Dealer name: " + self.full_name
+
+class DealerReview(models.Model):
+    dealership = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    purchase = models.BooleanField()
+    review = models.TextField()
+    purchase_date = models.DateField()
+    car_make = models.CharField(max_length=100)
+    car_model = models.CharField(max_length=100)
+    car_year = models.IntegerField()
+
+    SENTIMENT_CHOICES = (
+        ('Positive', 'Positive'),
+        ('Negative', 'Negative'),
+        ('Neutral', 'Neutral'),
+    )
+    
+    sentiment = models.CharField(max_length=10, choices=SENTIMENT_CHOICES)
+    id = models.AutoField(primary_key=True)
+
+    def __str__(self):
+        return self.name
 
 # Create your models here.
 
